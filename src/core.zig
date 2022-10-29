@@ -46,7 +46,7 @@ pub const Uuid = packed struct {
     }
 
     pub fn version(self: *const @This()) Version {
-        return switch (self.*.time_hi_and_version >> 4) {
+        return switch ((self.*.time_hi_and_version >> 4) & 0xf) {
             1 => .time_based,
             2 => .dce_security,
             3 => .name_based_md5,

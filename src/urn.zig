@@ -102,3 +102,14 @@ test "urn tu uudi" {
     const uuid = try urnToUuid(urn);
     try std.testing.expectEqual(@intCast(UUID, 0xc830d44fc000b480d111ad9d11b8a76b), uuid);
 }
+
+test "urn full circle" {
+    const allocator = std.testing.allocator;
+
+    const urn = "6ba7b811-9dad-11d1-80b4-00c04fd430c8";
+    const uuid = try urnToUuid(urn);
+    const urn_new = try uuidToUrn(allocator, uuid);
+    defer allocator.free(urn_new);
+
+    try std.testing.expectEqualStrings(urn, urn_new);
+}
