@@ -30,7 +30,7 @@ pub fn new() Uuid {
     // Get milliseconds since 1 Jan 1970 UTC
     const tms = @intCast(u48, time.milliTimestamp() & 0xffffffffffff);
     // Fill everything after the timestamp with random bytes
-    var uuid: Uuid = rand.int(Uuid) & ~(@intCast(Uuid, 0xffffffffffff));
+    var uuid: Uuid = @intCast(Uuid, rand.int(u80)) << 48;
     // Encode tms in big endian and OR it to the uuid
     uuid |= @intCast(Uuid, core.switchU48(tms));
     // Set variant and version field

@@ -36,6 +36,13 @@ pub fn build(b: *std.build.Builder) void {
     run_v4_example.dependOn(&v4_example.step);
     const run_v7_example = b.step("run-v7-example", "Run the v7 example");
     run_v7_example.dependOn(&v7_example.step);
+
+    const run_bench = addBenchmark(b, "bench", "bench/main.zig");
+    if (b.args) |args| {
+        run_bench.addArgs(args);
+    }
+    const bench = b.step("bench", "Run the v7 benchmark");
+    bench.dependOn(&run_bench.step);
 }
 
 fn addExample(b: *std.build.Builder, exeName: []const u8, sourceFile: []const u8) *std.build.RunStep {
@@ -44,7 +51,19 @@ fn addExample(b: *std.build.Builder, exeName: []const u8, sourceFile: []const u8
     exe.install();
 
     const run_cmd = exe.run();
-    run_cmd.step.dependOn(b.getInstallStep());
+    //run_cmd.step.dependOn(b.getInstallStep());
+
+    return run_cmd;
+}
+
+fn addBenchmark(b: *std.build.Builder, exeName: []const u8, sourceFile: []const u8) *std.build.RunStep {
+    const exe = b.addExecutable(exeName, sourceFile);
+    exe.addPackagePath("uuid-zig", "src/main.zig");
+    exe.setBuildMode(std.builtin.Mode.ReleaseFast);
+    exe.install();
+
+    const run_cmd = exe.run();
+    //run_cmd.step.dependOn(b.getInstallStep());
 
     return run_cmd;
 }
