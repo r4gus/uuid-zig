@@ -35,7 +35,13 @@ const id = try uuid.parseUrn("6ba7b811-9dad-11d1-80b4-00c04fd430c8");
 
 ## Which UUID version should I use?
 
-Consider version 4 (random) UUIDs if you just need unique identifiers.
+Consider version 4 (`v4`) UUIDs if you just need unique identifiers and version 7 (`v7`)
+if you want to use UUIDs as database keys or need to sort them.
+
+### Supported versions
+
+* `v4` - UUIDs using random data.
+* `v7` - UUIDs using a Epoch timestamp in combination with random data.
 
 ## Encoding
 
