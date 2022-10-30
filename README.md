@@ -27,7 +27,7 @@ const id = uuid.v4Uuid();
 
 You can parse URNs (UUID strings):
 
-```
+```zig
 const uuid = @import("uuid-zig");
 
 const id = try uuid.parseUrn("6ba7b811-9dad-11d1-80b4-00c04fd430c8");
@@ -46,3 +46,4 @@ is encoded as `00 11 22 33 44 55 66 77 88 99 aa bb cc dd ee ff` where `00` is th
 ## References
 
 * [RFC4122: A Universally Unique IDentifier (UUID) URN Namespace](https://datatracker.ietf.org/doc/html/rfc4122)
+* [New UUID Formats: draft-peabody-dispatch-new-uuid-format-04](https://datatracker.ietf.org/doc/html/draft-peabody-dispatch-new-uuid-format)
