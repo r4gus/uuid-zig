@@ -8,9 +8,9 @@ pub fn main() !void {
     const id1 = uuid.v7.new();
     const id2 = uuid.v7.new();
 
-    const urn1 = try uuid.getUrn(allocator, id1);
+    const urn1 = try uuid.urn.serialize(id1, allocator);
     defer allocator.free(urn1);
-    const urn2 = try uuid.getUrn(allocator, id2);
+    const urn2 = try uuid.urn.serialize(id2, allocator);
     defer allocator.free(urn2);
 
     const stdout = std.io.getStdOut().writer();

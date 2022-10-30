@@ -25,12 +25,26 @@ const uuid = @import("uuid-zig");
 const id = uuid.v4.new();
 ```
 
-You can parse URNs (UUID strings):
+You can serialize a UUID into a URN:
 
 ```zig
 const uuid = @import("uuid-zig");
 
-const id = try uuid.parseUrn("6ba7b811-9dad-11d1-80b4-00c04fd430c8");
+var gpa = std.heap.GeneralPurposeAllocator(.{}){};
+const allocator = gpa.allocator();
+
+const id = uuid.v7.new();
+
+const urn = try uuid.urn.serialize(id, allocator);
+defer allocator.free(urn);
+```
+
+You can also parse URNs (UUID strings):
+
+```zig
+const uuid = @import("uuid-zig");
+
+const id = try uuid.urn.deserialize("6ba7b811-9dad-11d1-80b4-00c04fd430c8");
 ```
 
 ## Which UUID version should I use?

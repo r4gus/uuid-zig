@@ -7,7 +7,7 @@ pub fn main() !void {
 
     const id = uuid.v4.new();
 
-    const urn = try uuid.getUrn(allocator, id);
+    const urn = try uuid.urn.serialize(id, allocator);
     defer allocator.free(urn);
 
     const stdout = std.io.getStdOut().writer();
