@@ -5,7 +5,7 @@ pub fn main() !void {
     var gpa = std.heap.GeneralPurposeAllocator(.{}){};
     const allocator = gpa.allocator();
 
-    const id = uuid.v4Uuid();
+    const id = uuid.v4.new();
 
     const urn = try uuid.getUrn(allocator, id);
     defer allocator.free(urn);

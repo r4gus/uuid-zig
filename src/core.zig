@@ -7,17 +7,17 @@ const testing = std.testing;
 pub const Uuid = u128;
 
 /// Switch between little and big endian
-fn switchU16(v: u16) u16 {
+pub fn switchU16(v: u16) u16 {
     return ((v >> 8) & 0x00ff) | ((v << 8) & 0xff00);
 }
 
 /// Switch between little and big endian
-fn switchU32(v: u32) u32 {
+pub fn switchU32(v: u32) u32 {
     return ((v >> 24) & 0x000000ff) | ((v >> 8) & 0x0000ff00) | ((v << 8) & 0x00ff0000) | ((v << 24) & 0xff000000);
 }
 
 /// Switch between little and big endian
-fn switchU48(v: u48) u48 {
+pub fn switchU48(v: u48) u48 {
     return ((v >> 40) & 0x0000000000ff) | ((v >> 24) & 0x00000000ff00) | ((v >> 8) & 0x000000ff0000) | ((v << 8) & 0x0000ff000000) | ((v << 24) & 0x00ff00000000) | ((v << 40) & 0xff0000000000);
 }
 

@@ -22,7 +22,7 @@ To generate a version 4 (random) UUID you can use:
 ```zig
 const uuid = @import("uuid-zig");
 
-const id = uuid.v4Uuid();
+const id = uuid.v4.new();
 ```
 
 You can parse URNs (UUID strings):

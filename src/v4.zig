@@ -5,7 +5,7 @@ const Uuid = core.Uuid;
 const rand = std.crypto.random;
 
 /// Create a version 4 UUID using a CSPRNG
-pub fn v4Uuid() Uuid {
+pub fn new() Uuid {
     // Set all bits to pseudo-randomly chosen values.
     var uuid: Uuid = rand.int(Uuid);
     // Set the two most significant bits of the
@@ -18,11 +18,11 @@ pub fn v4Uuid() Uuid {
 }
 
 test "create a version 4 UUID" {
-    const uuid1 = v4Uuid();
+    const uuid1 = new();
     try std.testing.expectEqual(core.Version.random, core.version(uuid1));
     try std.testing.expectEqual(core.Variant.rfc4122, core.variant(uuid1));
 
-    const uuid2 = v4Uuid();
+    const uuid2 = new();
     try std.testing.expectEqual(core.Version.random, core.version(uuid2));
     try std.testing.expectEqual(core.Variant.rfc4122, core.variant(uuid2));
 

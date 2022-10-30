@@ -17,18 +17,34 @@ pub fn build(b: *std.build.Builder) void {
     const test_step = b.step("test", "Run library tests");
     test_step.dependOn(&main_tests.step);
 
-    const exe = b.addExecutable("v4-example", "examples/uuid_v4.zig");
-    exe.setBuildMode(mode);
-    exe.setTarget(target);
+    //const exe = b.addExecutable("v4-example", "examples/uuid_v4.zig");
+    //exe.setBuildMode(mode);
+    //exe.setTarget(target);
+    //exe.addPackagePath("uuid-zig", "src/main.zig");
+    //exe.install();
+
+    //const run_cmd = exe.run();
+    //run_cmd.step.dependOn(b.getInstallStep());
+    //if (b.args) |args| {
+    //    run_cmd.addArgs(args);
+    //}
+
+    const v4_example = addExample(b, "v4-example", "examples/uuid_v4.zig");
+    const v7_example = addExample(b, "v7-example", "examples/uuid_v7.zig");
+
+    const run_v4_example = b.step("run-v4-example", "Run the v4 example");
+    run_v4_example.dependOn(&v4_example.step);
+    const run_v7_example = b.step("run-v7-example", "Run the v7 example");
+    run_v7_example.dependOn(&v7_example.step);
+}
+
+fn addExample(b: *std.build.Builder, exeName: []const u8, sourceFile: []const u8) *std.build.RunStep {
+    const exe = b.addExecutable(exeName, sourceFile);
     exe.addPackagePath("uuid-zig", "src/main.zig");
     exe.install();
 
     const run_cmd = exe.run();
     run_cmd.step.dependOn(b.getInstallStep());
-    if (b.args) |args| {
-        run_cmd.addArgs(args);
-    }
 
-    const run_step = b.step("run-v4-example", "Run the v4 example");
-    run_step.dependOn(&run_cmd.step);
+    return run_cmd;
 }
