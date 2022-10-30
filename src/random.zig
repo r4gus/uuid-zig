@@ -1,7 +1,7 @@
 const std = @import("std");
 const core = @import("core.zig");
 
-const Uuid = core.UUID;
+const Uuid = core.Uuid;
 const rand = std.crypto.random;
 
 /// Create a version 4 UUID using a CSPRNG
