@@ -22,57 +22,57 @@ pub fn switchU48(v: u48) u48 {
 }
 
 pub fn getTimeLow(uuid: Uuid) u32 {
-    return switchU32(@intCast(u32, uuid & 0xffffffff));
+    return switchU32(@as(u32, @intCast(uuid & 0xffffffff)));
 }
 
 pub fn setTimeLow(uuid: *Uuid, v: u32) void {
-    uuid.* &= ~@intCast(Uuid, 0xffffffff);
-    uuid.* |= @intCast(Uuid, switchU32(v));
+    uuid.* &= ~@as(Uuid, @intCast(0xffffffff));
+    uuid.* |= @as(Uuid, @intCast(switchU32(v)));
 }
 
 pub fn getTimeMid(uuid: Uuid) u16 {
-    return switchU16(@intCast(u16, (uuid >> 32) & 0xffff));
+    return switchU16(@as(u16, @intCast((uuid >> 32) & 0xffff)));
 }
 
 pub fn setTimeMid(uuid: *Uuid, v: u16) void {
-    uuid.* &= ~(@intCast(Uuid, 0xffff) << 32);
-    uuid.* |= @intCast(Uuid, switchU16(v)) << 32;
+    uuid.* &= ~(@as(Uuid, @intCast(0xffff)) << 32);
+    uuid.* |= @as(Uuid, @intCast(switchU16(v))) << 32;
 }
 
 pub fn getTimeHiAndVersion(uuid: Uuid) u16 {
-    return switchU16(@intCast(u16, (uuid >> 48) & 0xffff));
+    return switchU16(@as(u16, @intCast((uuid >> 48) & 0xffff)));
 }
 
 pub fn setTimeHiAndVersion(uuid: *Uuid, v: u16) void {
-    uuid.* &= ~(@intCast(Uuid, 0xffff) << 48);
-    uuid.* |= @intCast(Uuid, switchU16(v)) << 48;
+    uuid.* &= ~(@as(Uuid, @intCast(0xffff)) << 48);
+    uuid.* |= @as(Uuid, @intCast(switchU16(v))) << 48;
 }
 
 pub fn getClockSeqHiAndReserved(uuid: Uuid) u8 {
-    return @intCast(u8, (uuid >> 64) & 0xff);
+    return @as(u8, @intCast((uuid >> 64) & 0xff));
 }
 
 pub fn setClockSeqHiAndReserved(uuid: *Uuid, v: u8) void {
-    uuid.* &= ~(@intCast(Uuid, 0xff) << 64);
-    uuid.* |= @intCast(Uuid, v) << 64;
+    uuid.* &= ~(@as(Uuid, @intCast(0xff)) << 64);
+    uuid.* |= @as(Uuid, @intCast(v)) << 64;
 }
 
 pub fn getClockSeqLow(uuid: Uuid) u8 {
-    return @intCast(u8, (uuid >> 72) & 0xff);
+    return @as(u8, @intCast((uuid >> 72) & 0xff));
 }
 
 pub fn setClockSeqLow(uuid: *Uuid, v: u8) void {
-    uuid.* &= ~(@intCast(Uuid, 0xff) << 72);
-    uuid.* |= @intCast(Uuid, v) << 72;
+    uuid.* &= ~(@as(Uuid, @intCast(0xff)) << 72);
+    uuid.* |= @as(Uuid, @intCast(v)) << 72;
 }
 
 pub fn getNode(uuid: Uuid) u48 {
-    return switchU48(@intCast(u48, (uuid >> 80) & 0xffffffffffff));
+    return switchU48(@as(u48, @intCast((uuid >> 80) & 0xffffffffffff)));
 }
 
 pub fn setNode(uuid: *Uuid, v: u48) void {
-    uuid.* &= ~(@intCast(Uuid, 0xffffffffffff) << 80);
-    uuid.* |= @intCast(Uuid, switchU48(v)) << 80;
+    uuid.* &= ~(@as(Uuid, @intCast(0xffffffffffff)) << 80);
+    uuid.* |= @as(Uuid, @intCast(switchU48(v))) << 80;
 }
 
 /// The variant field determines the layout of the UUID
@@ -149,55 +149,55 @@ pub fn version(uuid: Uuid) Version {
 
 test "get/set time_low" {
     var id: Uuid = 0xffeeddccbbaa99887766554433221100;
-    try std.testing.expectEqual(@intCast(u32, 0x00112233), getTimeLow(id));
+    try std.testing.expectEqual(@as(u32, @intCast(0x00112233)), getTimeLow(id));
 
     setTimeLow(&id, 0xaabbccdd);
-    try std.testing.expectEqual(@intCast(u32, 0xaabbccdd), getTimeLow(id));
+    try std.testing.expectEqual(@as(u32, @intCast(0xaabbccdd)), getTimeLow(id));
 }
 
 test "get/set time_mid" {
     var id: Uuid = 0xffeeddccbbaa99887766554433221100;
-    try std.testing.expectEqual(@intCast(u16, 0x4455), getTimeMid(id));
+    try std.testing.expectEqual(@as(u16, @intCast(0x4455)), getTimeMid(id));
 
     setTimeMid(&id, 0xaabb);
-    try std.testing.expectEqual(@intCast(Uuid, 0xffeeddccbbaa99887766bbaa33221100), id);
-    try std.testing.expectEqual(@intCast(u16, 0xaabb), getTimeMid(id));
+    try std.testing.expectEqual(@as(Uuid, @intCast(0xffeeddccbbaa99887766bbaa33221100)), id);
+    try std.testing.expectEqual(@as(u16, @intCast(0xaabb)), getTimeMid(id));
 }
 
 test "get/set time_hi_and_version" {
     var id: Uuid = 0xffeeddccbbaa99887766554433221100;
-    try std.testing.expectEqual(@intCast(u16, 0x6677), getTimeHiAndVersion(id));
+    try std.testing.expectEqual(@as(u16, @intCast(0x6677)), getTimeHiAndVersion(id));
 
     setTimeHiAndVersion(&id, 0xaabb);
-    try std.testing.expectEqual(@intCast(Uuid, 0xffeeddccbbaa9988bbaa554433221100), id);
-    try std.testing.expectEqual(@intCast(u16, 0xaabb), getTimeHiAndVersion(id));
+    try std.testing.expectEqual(@as(Uuid, @intCast(0xffeeddccbbaa9988bbaa554433221100)), id);
+    try std.testing.expectEqual(@as(u16, @intCast(0xaabb)), getTimeHiAndVersion(id));
 }
 
 test "get/set clock_seq_hi_and_reserved" {
     var id: Uuid = 0xffeeddccbbaa99887766554433221100;
-    try std.testing.expectEqual(@intCast(u8, 0x88), getClockSeqHiAndReserved(id));
+    try std.testing.expectEqual(@as(u8, @intCast(0x88)), getClockSeqHiAndReserved(id));
 
     setClockSeqHiAndReserved(&id, 0xff);
-    try std.testing.expectEqual(@intCast(Uuid, 0xffeeddccbbaa99ff7766554433221100), id);
-    try std.testing.expectEqual(@intCast(u8, 0xff), getClockSeqHiAndReserved(id));
+    try std.testing.expectEqual(@as(Uuid, @intCast(0xffeeddccbbaa99ff7766554433221100)), id);
+    try std.testing.expectEqual(@as(u8, @intCast(0xff)), getClockSeqHiAndReserved(id));
 }
 
 test "get/set clock_seq_low" {
     var id: Uuid = 0xffeeddccbbaa99887766554433221100;
-    try std.testing.expectEqual(@intCast(u8, 0x99), getClockSeqLow(id));
+    try std.testing.expectEqual(@as(u8, @intCast(0x99)), getClockSeqLow(id));
 
     setClockSeqLow(&id, 0xff);
-    try std.testing.expectEqual(@intCast(Uuid, 0xffeeddccbbaaff887766554433221100), id);
-    try std.testing.expectEqual(@intCast(u8, 0xff), getClockSeqLow(id));
+    try std.testing.expectEqual(@as(Uuid, @intCast(0xffeeddccbbaaff887766554433221100)), id);
+    try std.testing.expectEqual(@as(u8, @intCast(0xff)), getClockSeqLow(id));
 }
 
 test "get/set node" {
     var id: Uuid = 0xffeeddccbbaa99887766554433221100;
-    try std.testing.expectEqual(@intCast(u48, 0xaabbccddeeff), getNode(id));
+    try std.testing.expectEqual(@as(u48, @intCast(0xaabbccddeeff)), getNode(id));
 
     setNode(&id, 0x001122334455);
-    try std.testing.expectEqual(@intCast(Uuid, 0x55443322110099887766554433221100), id);
-    try std.testing.expectEqual(@intCast(u48, 0x001122334455), getNode(id));
+    try std.testing.expectEqual(@as(Uuid, @intCast(0x55443322110099887766554433221100)), id);
+    try std.testing.expectEqual(@as(u48, @intCast(0x001122334455)), getNode(id));
 }
 
 test "get variant" {
