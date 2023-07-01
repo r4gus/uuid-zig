@@ -53,7 +53,7 @@ pub fn deserialize(s: []const u8) !Uuid {
         }
 
         const digit: u8 = (try hex2hw(s[i]) << 4) | try hex2hw(s[i + 1]);
-        uuid |= @intCast(Uuid, digit) << (j * 8);
+        uuid |= @as(Uuid, @intCast(digit)) << (j * 8);
         i += 2;
         j += 1;
     }
@@ -73,7 +73,7 @@ test "uuid to urn" {
 test "urn tu uudi" {
     const urn1 = "6ba7b811-9dad-11d1-80b4-00c04fd430c8";
     const uuid = try deserialize(urn1);
-    try std.testing.expectEqual(@intCast(Uuid, 0xc830d44fc000b480d111ad9d11b8a76b), uuid);
+    try std.testing.expectEqual(@as(Uuid, @intCast(0xc830d44fc000b480d111ad9d11b8a76b)), uuid);
 }
 
 test "urn full circle" {

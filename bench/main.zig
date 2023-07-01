@@ -14,8 +14,7 @@ pub fn main() !void {
         return;
     }
 
-    var stream = std.json.TokenStream.init(args[1]);
-    const iterations: usize = try std.json.parse(usize, &stream, .{});
+    const iterations = try std.fmt.parseInt(usize, args[1], 10);
 
     var i: usize = 0;
     var duration: u64 = 0;
