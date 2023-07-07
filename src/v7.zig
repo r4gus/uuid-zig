@@ -14,7 +14,7 @@ const time = std.time;
 ///
 /// Implementations SHOULD utilize this UUID over
 /// version 1 and 6 if possible.
-pub fn new() Uuid {
+pub fn new2(r: std.rand.Random, millis: *const fn () i64) Uuid {
     //   0                   1                   2                   3
     //   0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
     //  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -28,9 +28,9 @@ pub fn new() Uuid {
     //  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 
     // Get milliseconds since 1 Jan 1970 UTC
-    const tms = @as(u48, @intCast(time.milliTimestamp() & 0xffffffffffff));
+    const tms = @as(u48, @intCast(millis() & 0xffffffffffff));
     // Fill everything after the timestamp with random bytes
-    var uuid: Uuid = @as(Uuid, @intCast(rand.int(u80))) << 48;
+    var uuid: Uuid = @as(Uuid, @intCast(r.int(u80))) << 48;
     // Encode tms in big endian and OR it to the uuid
     uuid |= @as(Uuid, @intCast(core.switchU48(tms)));
     // Set variant and version field
@@ -39,6 +39,10 @@ pub fn new() Uuid {
     uuid &= 0xffffffffffffff3fff0fffffffffffff;
     uuid |= 0x00000000000000800070000000000000;
     return uuid;
+}
+
+pub fn new() Uuid {
+    return new2(rand, time.milliTimestamp);
 }
 
 test "create a version 7 UUID" {

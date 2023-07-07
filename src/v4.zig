@@ -4,10 +4,10 @@ const core = @import("core.zig");
 const Uuid = core.Uuid;
 const rand = std.crypto.random;
 
-/// Create a version 4 UUID using a CSPRNG
-pub fn new() Uuid {
+/// Create a version 4 UUID using a user provided RNG
+pub fn new2(r: std.rand.Random) Uuid {
     // Set all bits to pseudo-randomly chosen values.
-    var uuid: Uuid = rand.int(Uuid);
+    var uuid: Uuid = r.int(Uuid);
     // Set the two most significant bits of the
     // clock_seq_hi_and_reserved to zero and one.
     // Set the four most significant bits of the
@@ -15,6 +15,11 @@ pub fn new() Uuid {
     uuid &= 0xffffffffffffff3fff0fffffffffffff;
     uuid |= 0x00000000000000800040000000000000;
     return uuid;
+}
+
+/// Create a version 4 UUID using the default CSPRNG
+pub fn new() Uuid {
+    return new2(rand);
 }
 
 test "create a version 4 UUID" {

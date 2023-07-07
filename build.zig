@@ -1,12 +1,14 @@
 const std = @import("std");
 
-pub fn build(b: *std.Build) void {
+pub fn build(b: *std.Build) !void {
     const target = b.standardTargetOptions(.{});
     const optimize = b.standardOptimizeOption(.{});
 
     const uuid_module = b.addModule("uuid", .{
         .source_file = .{ .path = "src/main.zig" },
     });
+
+    try b.modules.put(b.dupe("uuid"), uuid_module);
 
     const lib = b.addStaticLibrary(.{
         .name = "uuid-zig",
@@ -24,18 +26,6 @@ pub fn build(b: *std.Build) void {
 
     const test_step = b.step("test", "Run library tests");
     test_step.dependOn(&main_tests.step);
-
-    //const exe = b.addExecutable("v4-example", "examples/uuid_v4.zig");
-    //exe.setBuildMode(mode);
-    //exe.setTarget(target);
-    //exe.addPackagePath("uuid-zig", "src/main.zig");
-    //exe.install();
-
-    //const run_cmd = exe.run();
-    //run_cmd.step.dependOn(b.getInstallStep());
-    //if (b.args) |args| {
-    //    run_cmd.addArgs(args);
-    //}
 
     const v4_example = addExample(b, uuid_module, "v4-example", "examples/uuid_v4.zig");
     const v7_example = addExample(b, uuid_module, "v7-example", "examples/uuid_v7.zig");
