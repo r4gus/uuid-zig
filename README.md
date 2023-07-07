@@ -32,7 +32,7 @@ const uuid = @import("uuid-zig");
 
 const id = uuid.v7.new();
 
-const urn = try uuid.urn.serialize(id);
+const urn = uuid.urn.serialize(id);
 ```
 
 You can also parse URNs (UUID strings):

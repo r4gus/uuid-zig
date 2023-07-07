@@ -12,16 +12,16 @@ pub const Urn = [36]u8;
 ///
 /// The caller is responsible for deallocating the string returned
 /// by this function.
-pub fn serialize(uuid: Uuid) !Urn {
+pub fn serialize(uuid: Uuid) Urn {
     var urn: Urn = undefined;
-    _ = try std.fmt.bufPrint(&urn, "{x:0>8}-{x:0>4}-{x:0>4}-{x:0>2}{x:0>2}-{x:0>12}", .{
+    _ = std.fmt.bufPrint(&urn, "{x:0>8}-{x:0>4}-{x:0>4}-{x:0>2}{x:0>2}-{x:0>12}", .{
         core.getTimeLow(uuid),
         core.getTimeMid(uuid),
         core.getTimeHiAndVersion(uuid),
         core.getClockSeqHiAndReserved(uuid),
         core.getClockSeqLow(uuid),
         core.getNode(uuid),
-    });
+    }) catch unreachable;
     return urn;
 }
 
@@ -66,7 +66,7 @@ pub fn deserialize(s: []const u8) !Uuid {
 
 test "uuid to urn" {
     const uuid1: Uuid = 0xffeeddccbbaa99887766554433221100;
-    const urn1 = try serialize(uuid1);
+    const urn1 = serialize(uuid1);
     try std.testing.expectEqualSlices(u8, "00112233-4455-6677-8899-aabbccddeeff", urn1[0..]);
 }
 
@@ -79,7 +79,7 @@ test "urn tu uudi" {
 test "urn full circle" {
     const urn1 = "6ba7b811-9dad-11d1-80b4-00c04fd430c8";
     const uuid = try deserialize(urn1);
-    const urn_new = try serialize(uuid);
+    const urn_new = serialize(uuid);
 
     try std.testing.expectEqualStrings(urn1, &urn_new);
 }
