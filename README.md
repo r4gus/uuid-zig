@@ -30,13 +30,9 @@ You can serialize a UUID into a URN:
 ```zig
 const uuid = @import("uuid-zig");
 
-var gpa = std.heap.GeneralPurposeAllocator(.{}){};
-const allocator = gpa.allocator();
-
 const id = uuid.v7.new();
 
-const urn = try uuid.urn.serialize(id, allocator);
-defer allocator.free(urn);
+const urn = try uuid.urn.serialize(id);
 ```
 
 You can also parse URNs (UUID strings):

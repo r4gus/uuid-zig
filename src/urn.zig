@@ -1,8 +1,9 @@
 const std = @import("std");
 const core = @import("core.zig");
 
-const Allocator = std.mem.Allocator;
 const Uuid = core.Uuid;
+
+pub const Urn = [36]u8;
 
 /// Serialize the given UUID into a URN
 ///
@@ -11,8 +12,9 @@ const Uuid = core.Uuid;
 ///
 /// The caller is responsible for deallocating the string returned
 /// by this function.
-pub fn serialize(uuid: Uuid, allocator: Allocator) ![]u8 {
-    return try std.fmt.allocPrint(allocator, "{x:0>8}-{x:0>4}-{x:0>4}-{x:0>2}{x:0>2}-{x:0>12}", .{
+pub fn serialize(uuid: Uuid) !Urn {
+    var urn: Urn = undefined;
+    _ = try std.fmt.bufPrint(&urn, "{x:0>8}-{x:0>4}-{x:0>4}-{x:0>2}{x:0>2}-{x:0>12}", .{
         core.getTimeLow(uuid),
         core.getTimeMid(uuid),
         core.getTimeHiAndVersion(uuid),
@@ -20,6 +22,7 @@ pub fn serialize(uuid: Uuid, allocator: Allocator) ![]u8 {
         core.getClockSeqLow(uuid),
         core.getNode(uuid),
     });
+    return urn;
 }
 
 fn hex2hw(h: u8) !u8 {
@@ -62,12 +65,9 @@ pub fn deserialize(s: []const u8) !Uuid {
 }
 
 test "uuid to urn" {
-    const allocator = std.testing.allocator;
-
     const uuid1: Uuid = 0xffeeddccbbaa99887766554433221100;
-    const urn1 = try serialize(uuid1, allocator);
-    defer allocator.free(urn1);
-    try std.testing.expectEqualStrings("00112233-4455-6677-8899-aabbccddeeff", urn1);
+    const urn1 = try serialize(uuid1);
+    try std.testing.expectEqualSlices(u8, "00112233-4455-6677-8899-aabbccddeeff", urn1[0..]);
 }
 
 test "urn tu uudi" {
@@ -77,12 +77,9 @@ test "urn tu uudi" {
 }
 
 test "urn full circle" {
-    const allocator = std.testing.allocator;
-
     const urn1 = "6ba7b811-9dad-11d1-80b4-00c04fd430c8";
     const uuid = try deserialize(urn1);
-    const urn_new = try serialize(uuid, allocator);
-    defer allocator.free(urn_new);
+    const urn_new = try serialize(uuid);
 
-    try std.testing.expectEqualStrings(urn1, urn_new);
+    try std.testing.expectEqualStrings(urn1, &urn_new);
 }

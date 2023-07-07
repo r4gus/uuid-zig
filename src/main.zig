@@ -17,7 +17,7 @@ pub const v7 = @import("v7.zig");
 /// A UUID is 128 bits long, and can guarantee uniqueness across space and time (RFC4122).
 pub const Uuid = core.Uuid;
 
-test "tests" {
+test "main tests" {
     _ = core;
     _ = urn;
     _ = v4;
