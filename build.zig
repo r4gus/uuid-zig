@@ -5,7 +5,7 @@ pub fn build(b: *std.Build) !void {
     const optimize = b.standardOptimizeOption(.{});
 
     const uuid_module = b.addModule("uuid", .{
-        .source_file = .{ .path = "src/main.zig" },
+        .root_source_file = .{ .path = "src/main.zig" },
     });
 
     try b.modules.put(b.dupe("uuid"), uuid_module);
@@ -43,24 +43,26 @@ pub fn build(b: *std.Build) !void {
     bench.dependOn(&run_bench.step);
 }
 
-fn addExample(b: *std.build.Builder, uuid_module: *std.build.Module, exeName: []const u8, sourceFile: []const u8) *std.build.RunStep {
+fn addExample(b: *std.Build, uuid_module: *std.Build.Module, exeName: []const u8, sourceFile: []const u8) *std.Build.Step.Run {
     const exe = b.addExecutable(.{
         .name = exeName,
         .root_source_file = .{ .path = sourceFile },
+        .target = b.host,
     });
-    exe.addModule("uuid-zig", uuid_module);
+    exe.root_module.addImport("uuid-zig", uuid_module);
     b.installArtifact(exe);
 
     return b.addRunArtifact(exe);
 }
 
-fn addBenchmark(b: *std.build.Builder, uuid_module: *std.build.Module, exeName: []const u8, sourceFile: []const u8) *std.build.RunStep {
+fn addBenchmark(b: *std.Build, uuid_module: *std.Build.Module, exeName: []const u8, sourceFile: []const u8) *std.Build.Step.Run {
     const exe = b.addExecutable(.{
         .name = exeName,
         .root_source_file = .{ .path = sourceFile },
+        .target = b.host,
         .optimize = .ReleaseFast,
     });
-    exe.addModule("uuid-zig", uuid_module);
+    exe.root_module.addImport("uuid-zig", uuid_module);
     b.installArtifact(exe);
 
     return b.addRunArtifact(exe);
