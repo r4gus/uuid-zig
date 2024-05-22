@@ -5,22 +5,10 @@ registration process.
 
 ## Getting started
 
-Copy this library into your project or add it as a Git-submodule:
-
-```
-git submodule add https://github.com/r4gus/uuid-zig.git
-```
-
-Then add the following to your `build.zig`:
-
-```
-exe.addPackagePath("uuid-zig", "path/to/uuid-zig/src/main.zig");
-```
-
 To generate a version 4 (random) UUID you can use:
 
 ```zig
-const uuid = @import("uuid-zig");
+const uuid = @import("uuid");
 
 const id = uuid.v4.new();
 ```
@@ -28,7 +16,7 @@ const id = uuid.v4.new();
 You can serialize a UUID into a URN:
 
 ```zig
-const uuid = @import("uuid-zig");
+const uuid = @import("uuid");
 
 const id = uuid.v7.new();
 
@@ -38,7 +26,7 @@ const urn = uuid.urn.serialize(id);
 You can also parse URNs (UUID strings):
 
 ```zig
-const uuid = @import("uuid-zig");
+const uuid = @import("uuid");
 
 const id = try uuid.urn.deserialize("6ba7b811-9dad-11d1-80b4-00c04fd430c8");
 ```
