@@ -5,7 +5,7 @@ const Uuid = core.Uuid;
 const rand = std.crypto.random;
 
 /// Create a version 4 UUID using a user provided RNG
-pub fn new2(r: std.rand.Random) Uuid {
+pub fn new2(r: std.Random) Uuid {
     // Set all bits to pseudo-randomly chosen values.
     var uuid: Uuid = r.int(Uuid);
     // Set the two most significant bits of the
