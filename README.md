@@ -62,6 +62,13 @@ v4: 10000000 UUIDs in 595.063ms
 v7: 10000000 UUIDs in 892.564ms
 ```
 
+Example: Macbook Pro with M3 Pro
+
+```
+v4: 10000000 UUIDs in 1.666s
+v7: 10000000 UUIDs in 546.736ms
+```
+
 ## References
 
 * [RFC4122: A Universally Unique IDentifier (UUID) URN Namespace](https://datatracker.ietf.org/doc/html/rfc4122)
