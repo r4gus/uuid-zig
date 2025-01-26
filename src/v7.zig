@@ -14,7 +14,7 @@ const time = std.time;
 ///
 /// Implementations SHOULD utilize this UUID over
 /// version 1 and 6 if possible.
-pub fn new2(r: std.rand.Random, millis: *const fn () i64) Uuid {
+pub fn new2(r: std.Random, millis: *const fn () i64) Uuid {
     //   0                   1                   2                   3
     //   0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
     //  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
