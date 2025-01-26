@@ -43,9 +43,9 @@
         //    .lazy = false,
         //},
         .zigclonedx = .{
-            .path = "../../sbom",
-            //.url = "https://github.com/r4gus/zigclonedx/archive/refs/heads/master.tar.gz",
-            //.hash = "122036a7c96a6a285882cd9598a2c28222c018c117beb1b2bdeb29fb0e7b035ee700",
+            //.path = "../../sbom",
+            .url = "https://github.com/r4gus/zigclonedx/archive/refs/heads/master.tar.gz",
+            .hash = "122036a7c96a6a285882cd9598a2c28222c018c117beb1b2bdeb29fb0e7b035ee700",
         },
     },
 
