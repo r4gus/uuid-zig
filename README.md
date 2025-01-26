@@ -3,6 +3,13 @@
 Universally Unique IDentifiers (UUIDs) are 128 bit long IDs that do not require a central
 registration process.
 
+Versions:
+
+| Zig version | uuid-zig version |
+|:-----------:|:----------------:|
+| 13.0        | 2.0, 2.1         |
+| 14.0        | 3.0              |
+
 ## Getting started
 
 To generate a version 4 (random) UUID you can use:
