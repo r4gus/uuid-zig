@@ -1,11 +1,15 @@
 const std = @import("std");
 
+const zigclonedx: type = @import("zigclonedx");
+
 pub fn build(b: *std.Build) !void {
     const target = b.standardTargetOptions(.{});
     const optimize = b.standardOptimizeOption(.{});
 
     const uuid_module = b.addModule("uuid", .{
         .root_source_file = b.path("src/main.zig"),
+        .target = target,
+        .optimize = optimize,
     });
 
     try b.modules.put(b.dupe("uuid"), uuid_module);
@@ -15,6 +19,7 @@ pub fn build(b: *std.Build) !void {
         .root_source_file = b.path("src/main.zig"),
         .target = target,
         .optimize = optimize,
+        .version = .{ .major = 0, .minor = 2, .patch = 1 },
     });
     b.installArtifact(lib);
 
@@ -41,6 +46,25 @@ pub fn build(b: *std.Build) !void {
     }
     const bench = b.step("bench", "Run the v7 benchmark");
     bench.dependOn(&run_bench.step);
+
+    //var bom = try zigclonedx.CycloneDX.fromBuild(b, .{
+    //    .type = .library,
+    //    .name = "uuid",
+    //    .group = "thesugar.de",
+    //    .version = "0.2.1",
+    //    .allocator = b.allocator,
+    //    .authors = &.{
+    //        .{
+    //            .name = "David P. Sugar",
+    //            .email = "david@thesugar.de",
+    //        },
+    //    },
+    //});
+    ////var bom = try sbom.generate(lib, b.allocator, null);
+    //defer bom.deinit(b.allocator);
+    //const bom_string = try bom.toJson(b.allocator);
+    //defer b.allocator.free(bom_string);
+    //std.debug.print("{s}\n", .{bom_string});
 }
 
 fn addExample(b: *std.Build, uuid_module: *std.Build.Module, exeName: []const u8, sourceFile: []const u8, target: std.Build.ResolvedTarget) *std.Build.Step.Run {
