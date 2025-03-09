@@ -1,5 +1,7 @@
 const std = @import("std");
 
+const zon: Zon = @import("build.zig.zon");
+
 const zigclonedx: type = @import("zigclonedx");
 
 pub fn build(b: *std.Build) !void {
@@ -14,19 +16,16 @@ pub fn build(b: *std.Build) !void {
 
     try b.modules.put(b.dupe("uuid"), uuid_module);
 
-    const lib = b.addStaticLibrary(.{
-        .name = "uuid-zig",
-        .root_source_file = b.path("src/main.zig"),
-        .target = target,
-        .optimize = optimize,
-        .version = .{ .major = 0, .minor = 2, .patch = 1 },
+    const lib = b.addLibrary(.{
+        .linkage = .static,
+        .name = "uuid",
+        .root_module = uuid_module,
+        .version = try std.SemanticVersion.parse(zon.version),
     });
     b.installArtifact(lib);
 
     const main_tests = b.addTest(.{
-        .root_source_file = b.path("src/main.zig"),
-        .target = target,
-        .optimize = optimize,
+        .root_module = uuid_module,
     });
 
     const test_step = b.step("test", "Run library tests");
@@ -68,26 +67,53 @@ pub fn build(b: *std.Build) !void {
 }
 
 fn addExample(b: *std.Build, uuid_module: *std.Build.Module, exeName: []const u8, sourceFile: []const u8, target: std.Build.ResolvedTarget) *std.Build.Step.Run {
-    const exe = b.addExecutable(.{
-        .name = exeName,
+    const exe_mod = b.createModule(.{
         .root_source_file = b.path(sourceFile),
         .target = target,
     });
+
+    const exe = b.addExecutable(.{
+        .name = exeName,
+        .root_module = exe_mod,
+    });
+
     exe.root_module.addImport("uuid-zig", uuid_module);
+
     b.installArtifact(exe);
 
     return b.addRunArtifact(exe);
 }
 
 fn addBenchmark(b: *std.Build, uuid_module: *std.Build.Module, exeName: []const u8, sourceFile: []const u8, target: std.Build.ResolvedTarget) *std.Build.Step.Run {
+    const exe_mod = b.createModule(.{
+        .root_source_file = b.path(sourceFile),
+        .target = target,
+        .optimize = .ReleaseFast,
+    });
+
     const exe = b.addExecutable(.{
         .name = exeName,
-        .root_source_file = b.path(sourceFile),
-        .optimize = .ReleaseFast,
-        .target = target,
+        .root_module = exe_mod,
     });
+
     exe.root_module.addImport("uuid-zig", uuid_module);
+
     b.installArtifact(exe);
 
     return b.addRunArtifact(exe);
 }
+
+const Zon = struct {
+    // TODO: defining the name this way is BS
+    name: enum { uuid },
+    version: []const u8,
+    fingerprint: usize,
+    // TODO same goes for the dependencies
+    dependencies: struct {
+        zigclonedx: struct {
+            url: []const u8,
+            hash: []const u8,
+        },
+    },
+    paths: []const []const u8,
+};
