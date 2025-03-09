@@ -16,12 +16,23 @@ pub fn build(b: *std.Build) !void {
 
     try b.modules.put(b.dupe("uuid"), uuid_module);
 
+    const uuid_c_module = b.createModule(.{
+        .root_source_file = b.path("src/root.zig"),
+        .target = target,
+        .optimize = optimize,
+    });
+
     const lib = b.addLibrary(.{
         .linkage = .static,
         .name = "uuid",
-        .root_module = uuid_module,
+        .root_module = uuid_c_module,
         .version = try std.SemanticVersion.parse(zon.version),
     });
+
+    lib.linkLibC();
+
+    lib.installHeader(b.path("src/uuid.h"), "uuid.h");
+
     b.installArtifact(lib);
 
     const main_tests = b.addTest(.{
@@ -45,6 +56,31 @@ pub fn build(b: *std.Build) !void {
     }
     const bench = b.step("bench", "Run the v7 benchmark");
     bench.dependOn(&run_bench.step);
+
+    const cexample_mod = b.addModule("cexample", .{
+        .target = target,
+        .optimize = optimize,
+    });
+    cexample_mod.addCSourceFiles(.{
+        .files = &.{
+            "src/cexample.c",
+        },
+        .flags = &.{
+            "-Wall",
+            "-Wextra",
+        },
+    });
+
+    const cexample_exe = b.addExecutable(.{
+        .name = "cexample",
+        .root_module = cexample_mod,
+    });
+
+    cexample_exe.linkLibC();
+
+    cexample_exe.linkLibrary(lib);
+
+    b.installArtifact(cexample_exe);
 
     //var bom = try zigclonedx.CycloneDX.fromBuild(b, .{
     //    .type = .library,
