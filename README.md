@@ -10,6 +10,15 @@ Versions:
 | 13.0        | 2.0, 2.1         |
 | 14.0        | 3.0              |
 
+To add the `uuid-zig` package to your `build.zig.zon` run:
+
+```
+# Replace <VERSION TAG> with the version you want to use
+zig fetch --save https://github.com/r4gus/uuid-zig/archive/refs/tags/<VERSION TAG>.tar.gz
+
+// e.g., zig fetch --save https://github.com/r4gus/uuid-zig/archive/refs/tags/0.3.0.tar.gz
+```
+
 ## Getting started
 
 To generate a version 4 (random) UUID you can use:
