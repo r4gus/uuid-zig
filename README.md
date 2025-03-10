@@ -54,6 +54,12 @@ This library encodes UUIDs in big-endian format, e.g. `00112233-4455-6677-8899-a
 is encoded as `00 11 22 33 44 55 66 77 88 99 aa bb cc dd ee ff` where `00` is the least and
 `ff` is the most significant byte (see [RFC4122 4.1.2 Layout and Byte Order](https://datatracker.ietf.org/doc/html/rfc4122#section-4.1.2)).
 
+## C Library
+
+Run `zig build -Doptimize=ReleaseFast` to build the C-Library. You will find the library in `zig-out/lib` and the header in `zig-out/include`.
+
+You can find a C-example in the examples folder.
+
 ## Benchmark
 
 To run a simple benchmark execute:
