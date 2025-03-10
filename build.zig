@@ -40,7 +40,7 @@ pub fn build(b: *std.Build) !void {
     });
 
     const test_step = b.step("test", "Run library tests");
-    test_step.dependOn(&main_tests.step);
+    test_step.dependOn(&b.addRunArtifact(main_tests).step);
 
     const v4_example = addExample(b, uuid_module, "v4-example", "examples/uuid_v4.zig", target);
     const v7_example = addExample(b, uuid_module, "v7-example", "examples/uuid_v7.zig", target);
@@ -63,7 +63,7 @@ pub fn build(b: *std.Build) !void {
     });
     cexample_mod.addCSourceFiles(.{
         .files = &.{
-            "src/cexample.c",
+            "examples/cexample.c",
         },
         .flags = &.{
             "-Wall",
