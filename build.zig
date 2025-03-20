@@ -2,8 +2,6 @@ const std = @import("std");
 
 const zon: Zon = @import("build.zig.zon");
 
-const zigclonedx: type = @import("zigclonedx");
-
 pub fn build(b: *std.Build) !void {
     const target = b.standardTargetOptions(.{});
     const optimize = b.standardOptimizeOption(.{});
@@ -81,25 +79,6 @@ pub fn build(b: *std.Build) !void {
     cexample_exe.linkLibrary(lib);
 
     b.installArtifact(cexample_exe);
-
-    //var bom = try zigclonedx.CycloneDX.fromBuild(b, .{
-    //    .type = .library,
-    //    .name = "uuid",
-    //    .group = "thesugar.de",
-    //    .version = "0.2.1",
-    //    .allocator = b.allocator,
-    //    .authors = &.{
-    //        .{
-    //            .name = "David P. Sugar",
-    //            .email = "david@thesugar.de",
-    //        },
-    //    },
-    //});
-    ////var bom = try sbom.generate(lib, b.allocator, null);
-    //defer bom.deinit(b.allocator);
-    //const bom_string = try bom.toJson(b.allocator);
-    //defer b.allocator.free(bom_string);
-    //std.debug.print("{s}\n", .{bom_string});
 }
 
 fn addExample(b: *std.Build, uuid_module: *std.Build.Module, exeName: []const u8, sourceFile: []const u8, target: std.Build.ResolvedTarget) *std.Build.Step.Run {
@@ -145,11 +124,6 @@ const Zon = struct {
     version: []const u8,
     fingerprint: usize,
     // TODO same goes for the dependencies
-    dependencies: struct {
-        zigclonedx: struct {
-            url: []const u8,
-            hash: []const u8,
-        },
-    },
+    dependencies: struct {},
     paths: []const []const u8,
 };
