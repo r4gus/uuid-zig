@@ -4,6 +4,7 @@ const core = @import("core.zig");
 const Uuid = core.Uuid;
 
 pub const Urn = [36]u8;
+pub const UrnZ = [36:0]u8;
 
 /// Serialize the given UUID into a URN
 ///
@@ -22,6 +23,27 @@ pub fn serialize(uuid: Uuid) Urn {
         core.getClockSeqLow(uuid),
         core.getNode(uuid),
     }) catch unreachable;
+    return urn;
+}
+
+/// Serialize the given UUID into a URN with 0-termination
+///
+/// Each field is separated by a `-` and printed as a zero-filled
+/// hexadecimal digit string with the most significant digit first.
+///
+/// The caller is responsible for deallocating the string returned
+/// by this function.
+pub fn serializeZ(uuid: Uuid) UrnZ {
+    var urn: UrnZ = undefined;
+    _ = std.fmt.bufPrint(&urn, "{x:0>8}-{x:0>4}-{x:0>4}-{x:0>2}{x:0>2}-{x:0>12}", .{
+        core.getTimeLow(uuid),
+        core.getTimeMid(uuid),
+        core.getTimeHiAndVersion(uuid),
+        core.getClockSeqHiAndReserved(uuid),
+        core.getClockSeqLow(uuid),
+        core.getNode(uuid),
+    }) catch unreachable;
+    urn[urn.len] = 0;
     return urn;
 }
 
@@ -68,6 +90,12 @@ test "uuid to urn" {
     const uuid1: Uuid = 0xffeeddccbbaa99887766554433221100;
     const urn1 = serialize(uuid1);
     try std.testing.expectEqualSlices(u8, "00112233-4455-6677-8899-aabbccddeeff", urn1[0..]);
+}
+
+test "uuid to urnZ" {
+    const uuid1: Uuid = 0xffeeddccbbaa99887766554433221100;
+    const urn1 = serializeZ(uuid1);
+    try std.testing.expectEqualSentinel(u8, 0, "00112233-4455-6677-8899-aabbccddeeff", urn1[0..]);
 }
 
 test "urn tu uudi" {
