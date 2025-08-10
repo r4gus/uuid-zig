@@ -10,9 +10,6 @@ pub const UrnZ = [36:0]u8;
 ///
 /// Each field is separated by a `-` and printed as a zero-filled
 /// hexadecimal digit string with the most significant digit first.
-///
-/// The caller is responsible for deallocating the string returned
-/// by this function.
 pub fn serialize(uuid: Uuid) Urn {
     var urn: Urn = undefined;
     _ = std.fmt.bufPrint(&urn, "{x:0>8}-{x:0>4}-{x:0>4}-{x:0>2}{x:0>2}-{x:0>12}", .{
@@ -30,9 +27,6 @@ pub fn serialize(uuid: Uuid) Urn {
 ///
 /// Each field is separated by a `-` and printed as a zero-filled
 /// hexadecimal digit string with the most significant digit first.
-///
-/// The caller is responsible for deallocating the string returned
-/// by this function.
 pub fn serializeZ(uuid: Uuid) UrnZ {
     var urn: UrnZ = undefined;
     _ = std.fmt.bufPrint(&urn, "{x:0>8}-{x:0>4}-{x:0>4}-{x:0>2}{x:0>2}-{x:0>12}", .{
