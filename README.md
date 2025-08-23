@@ -7,8 +7,9 @@ Versions:
 
 | Zig version | uuid-zig version |
 |:-----------:|:----------------:|
-| 13.0        | 2.0, 2.1         |
-| 14.0        | 3.0              |
+| 13.0        | 0.2.0, 0.2.1         |
+| 14.x        | 0.3.0, 0.3.1, 0.3.2  |
+| 15.x        | 0.4.0                |
 
 To add the `uuid-zig` package to your `build.zig.zon` run:
 
@@ -16,7 +17,30 @@ To add the `uuid-zig` package to your `build.zig.zon` run:
 # Replace <VERSION TAG> with the version you want to use
 zig fetch --save https://github.com/r4gus/uuid-zig/archive/refs/tags/<VERSION TAG>.tar.gz
 
-// e.g., zig fetch --save https://github.com/r4gus/uuid-zig/archive/refs/tags/0.3.0.tar.gz
+// e.g., zig fetch --save https://github.com/r4gus/uuid-zig/archive/refs/tags/0.4.0.tar.gz
+```
+
+Then import the UUID module within your `build.zig`, e.g.:
+
+```zig
+// ...
+const uuid_dep = b.dependency("uuid", .{
+    .target = target,
+    .optimize = optimize,
+});
+// ...
+
+const exe: *Compile = b.addExecutable(.{
+    // ...
+    .root_module: ?*Module = b.createModule(.{
+        .imports: []const Import = &.{
+            // ...
+            .{ .name: []const u8 = "uuid", .module: *Module = uuid_dep.module("uuid") },
+            // ...
+        },
+    }),
+});
+// ...
 ```
 
 ## Getting started
@@ -80,8 +104,8 @@ zig build bench -- 10000000 v7
 Example: ThinkPad X1 Yoga 3rd with an i7-8550U
 
 ```
-v4: 10000000 UUIDs in 595.063ms
-v7: 10000000 UUIDs in 892.564ms
+v4: 10000000 UUIDs in 134.057ms
+v7: 10000000 UUIDs in 399.558ms
 ```
 
 Example: Macbook Pro with M3 Pro

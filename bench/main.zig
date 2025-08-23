@@ -4,13 +4,20 @@ const uuid = @import("uuid-zig");
 pub fn main() !void {
     var gpa = std.heap.GeneralPurposeAllocator(.{}){};
     const allocator = gpa.allocator();
-    const stdout = std.io.getStdOut().writer();
+
+    var stdout_buffer: [1024]u8 = undefined;
+    var stdout_writer = std.fs.File.stdout().writer(&stdout_buffer);
+    const stdout = &stdout_writer.interface;
+
+    var stderr_buffer: [1024]u8 = undefined;
+    var stderr_writer = std.fs.File.stdout().writer(&stderr_buffer);
+    const stderr = &stderr_writer.interface;
 
     const args = try std.process.argsAlloc(allocator);
     defer std.process.argsFree(allocator, args);
 
     if (args.len < 3) {
-        try std.io.getStdErr().writer().print("usage: {s} <nr-of-UUIDs> <version>\n", .{args[0]});
+        try stderr.print("usage: {s} <nr-of-UUIDs> <version>\n", .{args[0]});
         return;
     }
 
@@ -40,10 +47,15 @@ pub fn main() !void {
             duration = timer.read();
         },
         else => {
-            try std.io.getStdErr().writer().print("unsupported version!\nversions: v4, v7\nusage: {s} <nr-of-UUIDs> <version>\n", .{args[0]});
+            try stderr.print("unsupported version!\nversions: v4, v7\nusage: {s} <nr-of-UUIDs> <version>\n", .{args[0]});
             return;
         },
     }
 
-    try stdout.print("{s}: {d} UUIDs in {}\n", .{ args[2], iterations, std.fmt.fmtDuration(duration) });
+    try stdout.print("{s}: {d} UUIDs in ", .{ args[2], iterations });
+    try stdout.printDurationUnsigned(duration);
+    try stdout.print("\n", .{});
+
+    try stdout.flush();
+    try stderr.flush();
 }
