@@ -15,9 +15,9 @@ To add the `uuid-zig` package to your `build.zig.zon` run:
 
 ```
 # Replace <VERSION TAG> with the version you want to use
-zig fetch --save https://github.com/r4gus/uuid-zig/archive/refs/tags/<VERSION TAG>.tar.gz
+zig fetch --save https://codeberg.org/r4gus/uuid-zig/archive/<VERSION>.tar.gz
 
-// e.g., zig fetch --save https://github.com/r4gus/uuid-zig/archive/refs/tags/0.4.0.tar.gz
+// e.g., zig fetch --save https://codeberg.org/r4gus/uuid-zig/archive/0.4.0.tar.gz
 ```
 
 Then import the UUID module within your `build.zig`, e.g.:
