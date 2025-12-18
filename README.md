@@ -1,5 +1,7 @@
 # UUID Zig
 
+<a href="https://liberapay.com/r4gus/donate"><img alt="Donate using Liberapay" src="https://liberapay.com/assets/widgets/donate.svg"></a>
+
 Universally Unique IDentifiers (UUIDs) are 128 bit long IDs that do not require a central
 registration process.
 
