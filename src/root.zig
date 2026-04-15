@@ -5,11 +5,17 @@ const v4 = @import("v4.zig");
 const v7 = @import("v7.zig");
 
 pub export fn uuid_v4() core.Uuid {
-    return v4.new();
+    var io_impl = std.Io.Threaded.init_single_threaded;
+    const io = io_impl.io();
+
+    return v4.new(io);
 }
 
 pub export fn uuid_v7() core.Uuid {
-    return v4.new();
+    var io_impl = std.Io.Threaded.init_single_threaded;
+    const io = io_impl.io();
+
+    return v4.new(io);
 }
 
 /// Caller is responsible for freeing the URN.

@@ -122,4 +122,5 @@ const Zon = struct {
     // TODO same goes for the dependencies
     dependencies: struct {},
     paths: []const []const u8,
+    minimum_zig_version: []const u8,
 };

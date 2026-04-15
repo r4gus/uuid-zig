@@ -9,9 +9,10 @@ Versions:
 
 | Zig version | uuid-zig version |
 |:-----------:|:----------------:|
-| 13.0        | 0.2.0, 0.2.1         |
-| 14.x        | 0.3.0, 0.3.1, 0.3.2  |
-| 15.x        | 0.4.0                |
+| 0.13.0        | 0.2.x         |
+| 0.14.x        | 0.3.x  |
+| 0.15.x        | 0.4.x                |
+| 0.16.x        | 0.5.x                |
 
 To add the `uuid-zig` package to your `build.zig.zon` run:
 
@@ -19,7 +20,7 @@ To add the `uuid-zig` package to your `build.zig.zon` run:
 # Replace <VERSION TAG> with the version you want to use
 zig fetch --save https://codeberg.org/r4gus/uuid-zig/archive/<VERSION>.tar.gz
 
-// e.g., zig fetch --save https://codeberg.org/r4gus/uuid-zig/archive/0.4.0.tar.gz
+// e.g., zig fetch --save https://codeberg.org/r4gus/uuid-zig/archive/0.5.0.tar.gz
 ```
 
 Then import the UUID module within your `build.zig`, e.g.:
@@ -47,23 +48,43 @@ const exe: *Compile = b.addExecutable(.{
 
 ## Getting started
 
+With the release of version `0.5.0`, `v4.new` and `v7.new`
+expect a object of type `std.Io` as argument.
+
+This can be obtained, e.g., by using [juicy main](https://ziglang.org/download/0.16.0/release-notes.html#Juicy-Main) released with Zig version `0.16.0`.
+
+Alternatively, you can use the following code snippet to get an `Io` interface:
+
+```zig
+var io_impl = std.Io.Threaded.init_single_threaded;
+const io = io_impl.io();
+```
+
+> All `io` are assumed to be of type `std.Io`.
+
+### v4
+
 To generate a version 4 (random) UUID you can use:
 
 ```zig
 const uuid = @import("uuid");
 
-const id = uuid.v4.new();
+const id = uuid.v4.new(io);
 ```
+
+### v7
 
 You can serialize a UUID into a URN:
 
 ```zig
 const uuid = @import("uuid");
 
-const id = uuid.v7.new();
+const id = uuid.v7.new(io);
 
 const urn = uuid.urn.serialize(id);
 ```
+
+### URN
 
 You can also parse URNs (UUID strings):
 
