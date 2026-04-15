@@ -12,12 +12,11 @@ pub fn build(b: *std.Build) !void {
         .optimize = optimize,
     });
 
-    try b.modules.put(b.dupe("uuid"), uuid_module);
-
     const uuid_c_module = b.createModule(.{
         .root_source_file = b.path("src/root.zig"),
         .target = target,
         .optimize = optimize,
+        .link_libc = true,
     });
 
     const lib = b.addLibrary(.{
@@ -26,8 +25,6 @@ pub fn build(b: *std.Build) !void {
         .root_module = uuid_c_module,
         .version = try std.SemanticVersion.parse(zon.version),
     });
-
-    lib.linkLibC();
 
     lib.installHeader(b.path("src/uuid.h"), "uuid.h");
 
@@ -58,6 +55,7 @@ pub fn build(b: *std.Build) !void {
     const cexample_mod = b.addModule("cexample", .{
         .target = target,
         .optimize = optimize,
+        .link_libc = true,
     });
     cexample_mod.addCSourceFiles(.{
         .files = &.{
@@ -74,9 +72,7 @@ pub fn build(b: *std.Build) !void {
         .root_module = cexample_mod,
     });
 
-    cexample_exe.linkLibC();
-
-    cexample_exe.linkLibrary(lib);
+    cexample_exe.root_module.linkLibrary(lib);
 
     b.installArtifact(cexample_exe);
 }
