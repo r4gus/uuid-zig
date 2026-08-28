@@ -35,6 +35,21 @@ pub fn main(init: std.process.Init) !void {
 
             duration = start.durationTo(end);
         },
+        '5' => {
+            const namespace = uuid.v4.new(init.io);
+            const name = &uuid.urn.serialize(uuid.v4.new(init.io));
+
+            const start = std.Io.Timestamp.now(init.io, .real);
+
+            while (i < iterations) : (i += 1) {
+                const id = uuid.v5.new(init.io, namespace, name);
+                std.mem.doNotOptimizeAway(id);
+            }
+
+            const end = std.Io.Timestamp.now(init.io, .real);
+
+            duration = start.durationTo(end);
+        },
         '7' => {
             const start = std.Io.Timestamp.now(init.io, .real);
 
@@ -75,8 +90,7 @@ fn human_duration(d: std.Io.Duration) ![]const u8 {
         try w.print("{d} s", .{d.toSeconds()});
     } else if (nd > 1000000) {
         try w.print("{d} ms", .{d.toMilliseconds()});
-    } else
-    if (nd > 1000) {
+    } else if (nd > 1000) {
         try w.print("{d} us", .{d.toMicroseconds()});
     } else {
         try w.print("{d} ns", .{d.toNanoseconds()});
