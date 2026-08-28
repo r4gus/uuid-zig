@@ -151,7 +151,7 @@ v4: 10000000 UUIDs in 1.666s
 v7: 10000000 UUIDs in 546.736ms
 ```
 
-Example: Ninkear N16Pro with a Ultar 5 125H
+Example: Ninkear N16Pro with an Intel Ultra 5 125H
 
 ```
 v4: 10000000 UUIDs in 186 ms (186563513 ns). 18 ns/op.
