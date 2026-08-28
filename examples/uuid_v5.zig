@@ -2,7 +2,7 @@ const std = @import("std");
 const uuid = @import("uuid-zig");
 
 pub fn main(init: std.process.Init) !void {
-    // UUID v5 needs a namespace uuid.
+    // UUIDv5 needs a namespace uuid.
     const namespace = try uuid.urn.deserialize("c1df9566-ad1e-4c5c-a4e2-a47d49ea3687");
     // You could use any uuid for this, try using one of these 2 lines:
     // const namespace = uuid.v4.new(init.io);

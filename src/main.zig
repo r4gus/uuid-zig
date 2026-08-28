@@ -9,7 +9,7 @@ pub const urn = @import("urn.zig");
 /// UUID version 4 namespace
 pub const v4 = @import("v4.zig");
 
-/// UUID version 4 namespace
+/// UUID version 5 namespace
 pub const v5 = @import("v5.zig");
 
 /// UUID version 7 namespace
