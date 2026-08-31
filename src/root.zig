@@ -14,7 +14,7 @@ pub export fn uuid_v4() core.Uuid {
 
 pub export fn uuid_v5(namespace: core.Uuid, name: ?[*:0]const u8) core.Uuid {
     const zig_name: []const u8 = if (name) |n| std.mem.span(n) else "";
-    return v5.newNoIo(namespace, zig_name);
+    return v5.new(namespace, zig_name);
 }
 
 pub export fn uuid_v7() core.Uuid {

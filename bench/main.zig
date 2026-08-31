@@ -42,7 +42,7 @@ pub fn main(init: std.process.Init) !void {
             const start = std.Io.Timestamp.now(init.io, .real);
 
             while (i < iterations) : (i += 1) {
-                const id = uuid.v5.new(init.io, namespace, name);
+                const id = uuid.v5.new(namespace, name);
                 std.mem.doNotOptimizeAway(id);
             }
 

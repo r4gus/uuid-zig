@@ -74,7 +74,7 @@ const id = uuid.v4.new(io);
 
 ### v5
 
-To generate a version 5 (random) UUID you can use:
+To generate a version 5 (name-based) UUID you can use:
 
 ```zig
 const uuid = @import("uuid");

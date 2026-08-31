@@ -9,8 +9,7 @@ pub fn main(init: std.process.Init) !void {
     // const namespace = uuid.v7.new(init.io);
 
     // Create a new UUIDv5.
-    // Use uuid.v5.newNoIo if you don't have access to a std.Io instance.
-    const id = uuid.v5.new(init.io, namespace, "Any list of bytes can be used as a name");
+    const id = uuid.v5.new(namespace, "Any list of bytes can be used as a name");
 
     // The generated UUID is just a `u128`. To translate
     // it into a human readable URN, we use the serialize
