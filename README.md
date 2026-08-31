@@ -12,7 +12,7 @@ Versions:
 | 0.13.0        | 0.2.x         | |
 | 0.14.x        | 0.3.x  | |
 | 0.15.x        | 0.4.x                | |
-| 0.16.x        | 0.5.x                | `zig fetch --save https://codeberg.org/r4gus/uuid-zig/archive/0.5.0.tar.gz` |
+| 0.16.x        | 0.5.x, 0.6.x                | `zig fetch --save https://codeberg.org/r4gus/uuid-zig/archive/0.6.0.tar.gz` |
 
 To add the `uuid-zig` package to your `build.zig.zon` run:
 
