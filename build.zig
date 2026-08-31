@@ -38,10 +38,13 @@ pub fn build(b: *std.Build) !void {
     test_step.dependOn(&b.addRunArtifact(main_tests).step);
 
     const v4_example = addExample(b, uuid_module, "v4-example", "examples/uuid_v4.zig", target);
+    const v5_example = addExample(b, uuid_module, "v5-example", "examples/uuid_v5.zig", target);
     const v7_example = addExample(b, uuid_module, "v7-example", "examples/uuid_v7.zig", target);
 
     const run_v4_example = b.step("run-v4-example", "Run the v4 example");
     run_v4_example.dependOn(&v4_example.step);
+    const run_v5_example = b.step("run-v5-example", "Run the v5 example");
+    run_v5_example.dependOn(&v5_example.step);
     const run_v7_example = b.step("run-v7-example", "Run the v7 example");
     run_v7_example.dependOn(&v7_example.step);
 

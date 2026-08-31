@@ -2,6 +2,7 @@ const std = @import("std");
 const core = @import("core.zig");
 const urn = @import("urn.zig");
 const v4 = @import("v4.zig");
+const v5 = @import("v5.zig");
 const v7 = @import("v7.zig");
 
 pub export fn uuid_v4() core.Uuid {
@@ -9,6 +10,11 @@ pub export fn uuid_v4() core.Uuid {
     const io = io_impl.io();
 
     return v4.new(io);
+}
+
+pub export fn uuid_v5(namespace: core.Uuid, name: ?[*:0]const u8) core.Uuid {
+    const zig_name: []const u8 = if (name) |n| std.mem.span(n) else "";
+    return v5.new(namespace, zig_name);
 }
 
 pub export fn uuid_v7() core.Uuid {

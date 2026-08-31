@@ -9,6 +9,9 @@ pub const urn = @import("urn.zig");
 /// UUID version 4 namespace
 pub const v4 = @import("v4.zig");
 
+/// UUID version 5 namespace
+pub const v5 = @import("v5.zig");
+
 /// UUID version 7 namespace
 pub const v7 = @import("v7.zig");
 
@@ -21,5 +24,6 @@ test "main tests" {
     _ = core;
     _ = urn;
     _ = v4;
+    _ = v5;
     _ = v7;
 }

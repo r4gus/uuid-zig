@@ -72,6 +72,17 @@ const uuid = @import("uuid");
 const id = uuid.v4.new(io);
 ```
 
+### v5
+
+To generate a version 5 (name-based) UUID you can use:
+
+```zig
+const uuid = @import("uuid");
+
+const namespace = uuid.v4.new(io); // Namespace can be any valid uuid
+const id = uuid.v5.new(io, namespace, "name");
+```
+
 ### v7
 
 You can serialize a UUID into a URN:
@@ -97,11 +108,13 @@ const id = try uuid.urn.deserialize("6ba7b811-9dad-11d1-80b4-00c04fd430c8");
 ## Which UUID version should I use?
 
 Consider version 4 (`v4`) UUIDs if you just need unique identifiers and version 7 (`v7`)
-if you want to use UUIDs as database keys or need to sort them.
+if you want to use UUIDs as database keys or need to sort them. Use version 5 (`v5`) if you need
+deterministic ids based on the data they refer to.
 
 ### Supported versions
 
 * `v4` - UUIDs using random data.
+* `v5` - UUIDs that are deterministic for a given namespace and data.
 * `v7` - UUIDs using a Epoch timestamp in combination with random data.
 
 ## Encoding
@@ -136,6 +149,14 @@ Example: Macbook Pro with M3 Pro
 ```
 v4: 10000000 UUIDs in 1.666s
 v7: 10000000 UUIDs in 546.736ms
+```
+
+Example: Ninkear N16Pro with an Intel Ultra 5 125H
+
+```
+v4: 10000000 UUIDs in 186 ms (186563513 ns). 18 ns/op.
+v5: 10000000 UUIDs in 11 ms (11576084 ns). 1 ns/op.
+v7: 10000000 UUIDs in 375 ms (375165226 ns). 37 ns/op.
 ```
 
 ## References
