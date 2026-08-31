@@ -80,7 +80,7 @@ To generate a version 5 (name-based) UUID you can use:
 const uuid = @import("uuid");
 
 const namespace = uuid.v4.new(io); // Namespace can be any valid uuid
-const id = uuid.v5.new(io, namespace, "name");
+const id = uuid.v5.new(namespace, "name");
 ```
 
 ### v7
