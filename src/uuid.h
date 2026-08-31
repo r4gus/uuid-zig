@@ -13,7 +13,7 @@ extern "C"
 extern Uuid uuid_v4();
 
 // Generate a UUID-v5
-extern Uuid uuid_v5(Uuid namespace, const void *name);
+extern Uuid uuid_v5(Uuid namespace, const uint8_t *name);
 
 // Generate a UUID-v7
 extern Uuid uuid_v7();
