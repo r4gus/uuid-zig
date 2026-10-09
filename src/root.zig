@@ -9,7 +9,7 @@ pub export fn uuid_v4() core.Uuid {
     var io_impl = std.Io.Threaded.init_single_threaded;
     const io = io_impl.io();
 
-    return v4.new(io);
+    return v4.fromIo(io);
 }
 
 pub export fn uuid_v5(namespace: core.Uuid, name: ?[*:0]const u8) core.Uuid {
@@ -21,7 +21,7 @@ pub export fn uuid_v7() core.Uuid {
     var io_impl = std.Io.Threaded.init_single_threaded;
     const io = io_impl.io();
 
-    return v4.new(io);
+    return v4.fromIo(io);
 }
 
 /// Caller is responsible for freeing the URN.

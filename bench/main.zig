@@ -27,7 +27,7 @@ pub fn main(init: std.process.Init) !void {
             const start = std.Io.Timestamp.now(init.io, .real);
 
             while (i < iterations) : (i += 1) {
-                const id = uuid.v4.new(init.io);
+                const id = uuid.v4.fromIo(init.io);
                 std.mem.doNotOptimizeAway(id);
             }
 
@@ -36,8 +36,8 @@ pub fn main(init: std.process.Init) !void {
             duration = start.durationTo(end);
         },
         '5' => {
-            const namespace = uuid.v4.new(init.io);
-            const name = &uuid.urn.serialize(uuid.v4.new(init.io));
+            const namespace = uuid.v4.fromIo(init.io);
+            const name = &uuid.urn.serialize(uuid.v4.fromIo(init.io));
 
             const start = std.Io.Timestamp.now(init.io, .real);
 
