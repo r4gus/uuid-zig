@@ -49,9 +49,7 @@ pub fn build(b: *std.Build) !void {
     run_v7_example.dependOn(&v7_example.step);
 
     const run_bench = addBenchmark(b, uuid_module, "bench", "bench/main.zig", target);
-    if (b.args) |args| {
-        run_bench.addArgs(args);
-    }
+    run_bench.addPassthruArgs();
     const bench = b.step("bench", "Run the v7 benchmark");
     bench.dependOn(&run_bench.step);
 
