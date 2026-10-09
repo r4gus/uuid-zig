@@ -13,6 +13,7 @@ Versions:
 | 0.14.x        | 0.3.x  | |
 | 0.15.x        | 0.4.x                | |
 | 0.16.x        | 0.5.x, 0.6.x                | `zig fetch --save https://codeberg.org/r4gus/uuid-zig/archive/0.6.0.tar.gz` |
+| 0.17.0        | 0.7.x                | `zig fetch --save https://codeberg.org/r4gus/uuid-zig/archive/0.7.0.tar.gz` |
 
 To add the `uuid-zig` package to your `build.zig.zon` run:
 
@@ -20,7 +21,7 @@ To add the `uuid-zig` package to your `build.zig.zon` run:
 # Replace <VERSION TAG> with the version you want to use
 zig fetch --save https://codeberg.org/r4gus/uuid-zig/archive/<VERSION>.tar.gz
 
-// e.g., zig fetch --save https://codeberg.org/r4gus/uuid-zig/archive/0.5.0.tar.gz
+// e.g., zig fetch --save https://codeberg.org/r4gus/uuid-zig/archive/0.7.0.tar.gz
 ```
 
 Then import the UUID module within your `build.zig`, e.g.:
@@ -48,8 +49,7 @@ const exe: *Compile = b.addExecutable(.{
 
 ## Getting started
 
-With the release of version `0.5.0`, `v4.new` and `v7.new`
-expect a object of type `std.Io` as argument.
+Some functions, like `v4.fromIo` expect a argument of type `std.Io`.
 
 This can be obtained, e.g., by using [juicy main](https://ziglang.org/download/0.16.0/release-notes.html#Juicy-Main) released with Zig version `0.16.0`.
 
@@ -69,7 +69,16 @@ To generate a version 4 (random) UUID you can use:
 ```zig
 const uuid = @import("uuid");
 
-const id = uuid.v4.new(io);
+const id = uuid.v4.fromIo(io);
+```
+
+If you prefer to use a custom (CS)PRNG, you can use the `v4.fromRandom` function:
+
+```zig
+const uuid = @import("uuid");
+
+const rng: std.Random.IoSource = .{ .io = io };
+const id = uuid.v4.fromRandom(rng.interface());
 ```
 
 ### v5
